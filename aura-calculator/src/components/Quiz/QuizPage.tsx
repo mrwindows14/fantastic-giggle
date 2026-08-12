@@ -990,6 +990,33 @@ export function QuizPage() {
               transition={{ duration: 0.5 }}
             />
           </div>
+          <div className="mt-3 flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              {questions.map((_, idx) => {
+                const isCurrent = idx === currentQuestion;
+                const isDone = idx < currentQuestion;
+                return (
+                  <motion.span
+                    key={idx}
+                    layout
+                    className="h-2 w-2"
+                    style={{
+                      backgroundColor: isDone
+                        ? "var(--ink)"
+                        : isCurrent
+                          ? "var(--accent)"
+                          : "transparent",
+                      border: "1px solid var(--ink)",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  />
+                );
+              })}
+            </div>
+            <span className="font-[var(--font-mono)] text-[10px] text-[var(--ink-faint)]">
+              {answers.length}/{questions.length} RECORDED
+            </span>
+          </div>
         </div>
       )}
 
