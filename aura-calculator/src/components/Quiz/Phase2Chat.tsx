@@ -11,6 +11,7 @@ type ChatMessage = {
   text: string;
   timestamp: number;
   optionId?: string;
+  variant?: "recall";
 };
 
 type Phase2ChatProps = {
@@ -18,6 +19,7 @@ type Phase2ChatProps = {
   onAnswer: (questionId: number, optionId: string) => void;
   questionNumber: number;
   totalQuestions: number;
+  previousChoices?: string[];
 };
 
 // Typing indicator component
@@ -89,25 +91,41 @@ function ChatBubble({ message }: { message: ChatMessage }) {
         {/* Sender label */}
         <div
           className={`px-4 pt-2 font-[var(--font-mono)] text-xs font-bold tracking-widest ${
-            isSystem ? "text-[var(--ink)]" : "text-[var(--ink-muted)]"
+            message.variant === "recall"
+              ? "text-[var(--ink-muted)]"
+              : isSystem
+                ? "text-[var(--ink)]"
+                : "text-[var(--ink-muted)]"
           }`}
         >
-          {isSystem ? "SYSTEM" : "YOU"}
+          {message.variant === "recall"
+            ? "SYSTEM · RECALL"
+            : isSystem
+              ? "SYSTEM"
+              : "YOU"}
         </div>
 
         {/* Message content */}
         <div className="px-4 pb-3 text-sm leading-relaxed text-[var(--ink-soft)]">
-          {message.text}
+          {message.variant === "recall" ? (
+            <>
+              You previously answered: <span className="font-semibold text-[var(--ink)]">&ldquo;{message.text}&rdquo;</span>{" "}
+              — the System never forgets.
+            </>
+          ) : (
+            message.text
+          )}
         </div>
       </div>
     </motion.div>
   );
 }
 
-export function Phase2Chat({ question, onAnswer, questionNumber, totalQuestions }: Phase2ChatProps) {
+export function Phase2Chat({ question, onAnswer, questionNumber, totalQuestions, previousChoices }: Phase2ChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(true);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [recallCount, setRecallCount] = useState(0);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -119,6 +137,25 @@ export function Phase2Chat({ question, onAnswer, questionNumber, totalQuestions 
     // Clear any existing timeout
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
+    }
+
+    // Aura System recall: reference an earlier answer before the next question
+    const recalled =
+      previousChoices && previousChoices.length > 0 && questionNumber > 1
+        ? previousChoices[(questionNumber - 2) % previousChoices.length]
+        : null;
+    if (recalled) {
+      setRecallCount((c) => c + 1);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `recall-${question.id}`,
+          type: "system",
+          text: recalled,
+          timestamp: Date.now(),
+          variant: "recall",
+        },
+      ]);
     }
 
     // Add typing delay based on question length
@@ -209,10 +246,15 @@ export function Phase2Chat({ question, onAnswer, questionNumber, totalQuestions 
             <div className="font-[var(--font-mono)] text-sm font-bold tracking-widest text-[var(--ink)]">
               AURA SYSTEM
             </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 animate-pulse bg-[var(--ink)]" />
-              <span className="font-[var(--font-mono)] text-xs text-[var(--ink-muted)]">ONLINE</span>
-            </div>
+        <div className="flex items-center gap-2">
+          <div className="h-2 w-2 animate-pulse bg-[var(--ink)]" />
+          <span className="font-[var(--font-mono)] text-xs text-[var(--ink-muted)]">ONLINE</span>
+          {recallCount > 0 && (
+            <span className="border border-dashed border-[var(--ink)] px-1.5 font-[var(--font-mono)] text-[10px] font-bold text-[var(--ink)]">
+              RECALL×{recallCount}
+            </span>
+          )}
+        </div>
           </div>
         </div>
         <div className="font-[var(--font-mono)] text-xs text-[var(--ink-muted)]">

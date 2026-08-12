@@ -165,6 +165,8 @@ export function QuizPage() {
   const [distractionActive, setDistractionActive] = useState(false);
   const [scoreEstimate, setScoreEstimate] = useState(0);
   const [curveballCount, setCurveballCount] = useState(0);
+  const [showMidpointCheck, setShowMidpointCheck] = useState(false);
+  const midpointShownRef = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const answeringRef = useRef(false);
   const pressureEventTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -207,6 +209,34 @@ export function QuizPage() {
 
   // Dynamic difficulty
   const difficulty = useMemo(() => getDynamicDifficulty(answers, phase), [answers, phase]);
+
+  // Prior answers as text, for the Phase 2 Aura System recall
+  const previousChoices = useMemo(
+    () =>
+      answers
+        .map((a) => {
+          const q = questions.find((qq) => qq.id === a.questionId);
+          return q?.options.find((o) => o.id === a.optionId)?.text;
+        })
+        .filter((t): t is string => Boolean(t)),
+    [answers, questions]
+  );
+
+  // Live adaptive-pressure readout for the System Status HUD
+  const pressure = useMemo(() => {
+    const max = Math.max(
+      difficulty.pressureEventChance,
+      difficulty.curveballChance,
+      difficulty.distractionChance
+    );
+    const pct = Math.min(100, Math.round(max * 100));
+    const label = pct < 15 ? "NOMINAL" : pct < 30 ? "ELEVATED" : pct < 45 ? "HEIGHTENED" : "CRITICAL";
+    return { pct, label };
+  }, [difficulty]);
+
+  const avgReplyMs = answers.length
+    ? Math.round(answers.reduce((s, a) => s + a.responseTimeMs, 0) / answers.length)
+    : 0;
 
   // Score estimate (debounced to avoid recalculation on every render)
   useEffect(() => {
@@ -318,7 +348,7 @@ export function QuizPage() {
 
   // ===== KEYBOARD ANSWERS (1-4) =====
   useEffect(() => {
-    if (!quizStarted || showPhaseTransition || showDisclaimer) return;
+    if (!quizStarted || showPhaseTransition || showDisclaimer || showMidpointCheck) return;
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
@@ -381,8 +411,7 @@ export function QuizPage() {
 
   // Spectator count for Phase 4
   useEffect(() => {
-    if (phase === 4 && currentQ?.spectatorCount) {
-      const target = currentQ.spectatorCount;
+    if (phase === 4 && currentQ?.spectatorCount) {      const target = currentQ.spectatorCount;
       setSpectatorCount(0);
       const increment = Math.ceil(target / 30);
       let current = 0;
@@ -412,7 +441,7 @@ export function QuizPage() {
 
   // ===== PRESSURE EVENT SYSTEM =====
   useEffect(() => {
-    if (!quizStarted || showPhaseTransition) return;
+    if (!quizStarted || showPhaseTransition || showMidpointCheck) return;
 
     // Streaks attract the system's attention: escalation on hot runs
     const streakEscalation = streak >= 3 ? 0.1 : 0;
@@ -490,6 +519,21 @@ export function QuizPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion, quizStarted, curveballCount]);
+
+  // ===== HALF-TIME DEBRIEF =====
+  useEffect(() => {
+    const midpoint = Math.floor(questions.length / 2);
+    if (
+      quizStarted &&
+      currentQuestion === midpoint &&
+      !midpointShownRef.current &&
+      !showPhaseTransition
+    ) {
+      midpointShownRef.current = true;
+      setShowMidpointCheck(true);
+      answeringRef.current = true;
+    }
+  }, [currentQuestion, quizStarted, showPhaseTransition, questions.length]);
 
   const handleStartQuiz = () => setShowDisclaimer(true);
   const handleAcceptDisclaimer = () => {
@@ -784,6 +828,109 @@ export function QuizPage() {
         </div>
       )}
 
+      {/* ===== HALF-TIME DEBRIEF ===== */}
+      <AnimatePresence>
+        {showMidpointCheck && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-[var(--ink)]/70 p-4 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              className="sketch-card w-full max-w-lg p-8"
+            >
+              <p className="stamp mb-4">HALF-TIME DEBRIEF</p>
+              <h2 className="mb-6 font-[var(--font-display)] text-3xl font-black uppercase text-[var(--ink)]">
+                System checkpoint
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="sketch-card-thin p-4 text-center">
+                  <p className="font-[var(--font-mono)] text-xs tracking-widest text-[var(--ink-muted)]">CURRENT SCORE</p>
+                  <p className="font-[var(--font-mono)] text-2xl font-black text-[var(--ink)]">{scoreEstimate.toLocaleString()}</p>
+                </div>
+                <div className="sketch-card-thin p-4 text-center">
+                  <p className="font-[var(--font-mono)] text-xs tracking-widest text-[var(--ink-muted)]">BEST STREAK</p>
+                  <p className="font-[var(--font-mono)] text-2xl font-black text-[var(--ink)]">{bestStreak}x</p>
+                </div>
+                <div className="sketch-card-thin p-4 text-center">
+                  <p className="font-[var(--font-mono)] text-xs tracking-widest text-[var(--ink-muted)]">CURVEBALLS</p>
+                  <p className="font-[var(--font-mono)] text-2xl font-black text-[var(--ink)]">{curveballCount}</p>
+                </div>
+                <div className="sketch-card-thin p-4 text-center">
+                  <p className="font-[var(--font-mono)] text-xs tracking-widest text-[var(--ink-muted)]">AVG REPLY</p>
+                  <p className="font-[var(--font-mono)] text-2xl font-black text-[var(--ink)]">
+                    {avgReplyMs ? `${Math.round(avgReplyMs / 100) / 10}s` : "—"}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-6 font-[var(--font-mono)] text-xs text-[var(--ink-muted)]">
+                THE SYSTEM PAUSED TO TAKE STOCK OF YOU. {answers.length} REPLIES ON RECORD, PRESSURE{" "}
+                {pressure.label}.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setShowMidpointCheck(false);
+                  answeringRef.current = false;
+                  setQuestionStartTime(Date.now());
+                }}
+                className="sketch-btn mt-6 w-full text-base"
+              >
+                CONTINUE THE EXAM
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ===== SYSTEM STATUS HUD ===== */}
+      {quizStarted && (
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="sketch-card-thin fixed left-4 top-4 z-50 px-4 py-3"
+        >
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2 w-2 animate-pulse bg-[var(--ink)]" />
+            <span className="font-[var(--font-mono)] text-xs font-bold tracking-widest text-[var(--ink)]">
+              SYSTEM STATUS
+            </span>
+          </div>
+          <div className="mt-2 flex items-center gap-2">
+            <span className="font-[var(--font-mono)] text-[10px] text-[var(--ink-muted)]">PRESSURE</span>
+            <div className="flex gap-1">
+              {[0, 1, 2, 3].map((seg) => (
+                <div
+                  key={seg}
+                  className="h-3 w-3 border border-[var(--ink)]"
+                  style={{
+                    backgroundColor: pressure.pct > seg * 25 ? "var(--ink)" : "transparent",
+                  }}
+                />
+              ))}
+            </div>
+            <span className="font-[var(--font-mono)] text-xs font-black text-[var(--ink)]">
+              {pressure.label}
+            </span>
+          </div>
+          <div className="mt-2 space-y-0.5 font-[var(--font-mono)] text-[10px] text-[var(--ink-muted)]">
+            <div>PHASE {phase}/5 · {phaseInfo.name.toUpperCase()}</div>
+            {difficulty.timerReduction > 0 && (
+              <div>TIMER CUT −{difficulty.timerReduction}MS</div>
+            )}
+            {curveballCount > 0 && (
+              <div className="font-bold text-[var(--ink)]">
+                CURVEBALLS FIELDED: {curveballCount}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
+
       {/* ===== SCORE ESTIMATE ===== */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -854,6 +1001,7 @@ export function QuizPage() {
             onAnswer={handleAnswer}
             questionNumber={currentQuestion + 1}
             totalQuestions={questions.length}
+            previousChoices={previousChoices}
           />
         </div>
       ) : (
