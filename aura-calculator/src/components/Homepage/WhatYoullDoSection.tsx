@@ -56,7 +56,7 @@ export function WhatYoullDoSection() {
               className={`sketch-card-thin flex items-center gap-6 p-8 ${index % 2 === 0 ? "tilt-l" : "tilt-r"}`}
             >
               {/* Step number plate */}
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center bg-[var(--ink)]">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[var(--ink)]">
                 <span className="font-[var(--font-mono)] text-xl font-black text-[var(--paper)]">
                   {item.step}
                 </span>
@@ -80,7 +80,7 @@ export function WhatYoullDoSection() {
 
         {/* Warning */}
         <div data-reveal="scale" data-reveal-delay="0.2" className="mt-16 text-center">
-          <div className="inline-flex items-center gap-3 border-2 border-[var(--ink-line)] bg-[var(--paper-card)] px-6 py-3 shadow-[3px_3px_0_rgba(20,17,12,0.7)]">
+          <div className="inline-flex items-center gap-3 rounded-full border border-[var(--ink-line)] bg-[var(--paper-card)] px-7 py-3.5 shadow-[0_10px_24px_-12px_rgba(23,19,12,0.25)]">
             <AlertCircle className="h-5 w-5 text-[var(--ink)]" />
             <span className="font-[var(--font-mono)] text-sm font-semibold text-[var(--ink)]">
               AVERAGE COMPLETION TIME: 8-12 MINUTES. NO PAUSING ALLOWED.

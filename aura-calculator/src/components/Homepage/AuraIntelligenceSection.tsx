@@ -82,7 +82,7 @@ export function AuraIntelligenceSection() {
         {/* Split-word headline */}
         <h2
           data-motion-text="words"
-          className="mx-auto mb-8 max-w-4xl text-center font-[var(--font-display)] text-5xl font-black uppercase leading-[0.95] tracking-tight text-[var(--paper)] sm:text-7xl"
+          className="mx-auto mb-8 max-w-4xl text-center font-[var(--font-display)] text-5xl font-black uppercase leading-[1.08] text-[var(--paper)] sm:text-7xl"
         >
           The system never blinks
         </h2>
@@ -124,7 +124,7 @@ export function AuraIntelligenceSection() {
               key={principle.title}
               data-reveal={index % 2 === 0 ? "slide-left" : "slide-right"}
               data-reveal-delay={String(index * 0.08)}
-              className="border-2 border-[var(--paper)]/70 p-8 text-center"
+              className="rounded-[1.75rem] border border-[var(--paper)]/25 bg-[var(--paper)]/[0.04] p-8 text-center"
             >
               <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border-2 border-[var(--paper)] font-[var(--font-mono)] text-lg font-black text-[var(--paper)]">
                 {index + 1}

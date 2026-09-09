@@ -77,9 +77,9 @@ export function DontLieSection() {
             <div
               key={index}
               data-reveal-item
-              className={`border-2 border-[var(--paper)]/70 p-6 text-left transition-transform duration-300 hover:-translate-y-1 ${index % 2 === 0 ? "tilt-l" : "tilt-r"}`}
+              className={`rounded-[1.75rem] border border-[var(--paper)]/25 bg-[var(--paper)]/[0.04] p-7 text-left transition-transform duration-300 hover:-translate-y-1 ${index % 2 === 0 ? "tilt-l" : "tilt-r"}`}
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center border-2 border-[var(--paper)]/70 text-[var(--paper)]">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-[var(--paper)]/40 text-[var(--paper)]">
                 {method.icon}
               </div>
               <h4 className="mb-2 font-[var(--font-mono)] text-sm font-bold tracking-wide text-[var(--paper)]">
@@ -93,7 +93,7 @@ export function DontLieSection() {
         </div>
 
         {/* Bottom warning */}
-        <div data-reveal="fade-up" className="inline-flex items-center gap-3 border-2 border-[var(--paper)]/70 px-6 py-3">
+        <div data-reveal="fade-up" className="inline-flex items-center gap-3 rounded-full border border-[var(--paper)]/30 bg-[var(--paper)]/[0.05] px-7 py-3.5">
           <AlertTriangle className="h-5 w-5 text-[var(--paper)]" />
           <span className="font-[var(--font-mono)] text-sm font-bold text-[var(--paper)]">
             LYING WILL ONLY LOWER YOUR SCORE. BE HONEST. BE YOURSELF. LET THE AURA FLOW.

@@ -89,24 +89,24 @@ export function HeroSection({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.25, duration: 0.7 }}
-          className="mb-6 font-[var(--font-display)] font-black leading-[0.95] tracking-tight"
+          className="mb-8 flex flex-col items-center font-[var(--font-display)] font-black leading-[1.08]"
         >
-          <span className="mono-label mb-4 block text-base sm:text-lg">
+          <span className="mono-label mb-5 block text-base sm:text-lg">
             THE
           </span>
-          <span className="block text-6xl uppercase sm:text-8xl lg:text-9xl">
+          <span className="block py-0.5 text-6xl uppercase leading-tight sm:text-8xl lg:text-9xl">
             GIGA
           </span>
-          <span className="sketch-underline block text-6xl uppercase sm:text-8xl lg:text-9xl">
+          <span className="sketch-underline block py-0.5 text-6xl uppercase leading-tight sm:text-8xl lg:text-9xl">
             OP METER
           </span>
-          <span className="mono-label mt-4 block text-sm">
+          <span className="mono-label mt-6 block text-sm">
             — A CERTIFIED AURA MEASUREMENT DEVICE —
           </span>
         </motion.h1>
 
         {/* Rotating quote */}
-        <div className="mb-6 flex h-14 items-center justify-center">
+        <div className="mb-8 flex min-h-14 items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.p
               key={quoteIndex}
@@ -128,7 +128,7 @@ export function HeroSection({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="mx-auto mb-4 max-w-3xl text-lg leading-relaxed text-[var(--ink-soft)] sm:text-xl"
+          className="mx-auto mb-6 max-w-3xl text-lg leading-relaxed text-[var(--ink-soft)] sm:text-xl"
         >
           Not your average personality quiz. This is a{" "}
           <span className="font-bold text-[var(--ink)]">50-question psychometric examination</span>{" "}
@@ -140,7 +140,7 @@ export function HeroSection({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.6 }}
-          className="mx-auto mb-10 max-w-2xl font-[var(--font-mono)] text-sm text-[var(--ink-muted)]"
+          className="mx-auto mb-14 max-w-2xl font-[var(--font-mono)] text-sm text-[var(--ink-muted)]"
         >
           Response times. Consistency. Hesitation. Instinct velocity. There is{" "}
           <span className="font-bold text-[var(--ink)]">no hiding</span> from the machine.

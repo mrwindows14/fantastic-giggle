@@ -75,7 +75,7 @@ export function RolesSection() {
             <div
               key={role.tier}
               data-reveal-item
-              className={`sketch-card relative p-6 transition-transform duration-300 hover:-translate-y-2 ${index === 0 ? "tilt-l" : ""}`}
+              className={`sketch-card relative flex h-full flex-col items-center p-8 text-center transition-transform duration-300 hover:-translate-y-2 ${index === 0 ? "tilt-l" : ""}`}
             >
               {/* Character bust */}
               <div className="mb-2 flex justify-center">
@@ -112,7 +112,7 @@ export function RolesSection() {
                 {role.stats.map((stat, i) => (
                   <span
                     key={i}
-                    className="border-2 border-[var(--ink-line)] bg-[var(--paper-deep)] px-2.5 py-1 font-[var(--font-mono)] text-[10px] font-semibold tracking-wide text-[var(--ink-soft)]"
+                    className="rounded-full border border-[var(--ink-line)] bg-[var(--paper-deep)] px-3 py-1 font-[var(--font-mono)] text-[10px] font-semibold tracking-wide text-[var(--ink-soft)]"
                   >
                     {stat}
                   </span>
@@ -124,7 +124,7 @@ export function RolesSection() {
           {/* Spacer card for balanced grid */}
           <div
             data-reveal-item
-            className="hidden items-center justify-center border-2 border-dashed border-[var(--ink-line-faint)] p-6 lg:flex"
+            className="hidden items-center justify-center rounded-[var(--radius-card)] border-2 border-dashed border-[var(--ink-line-faint)] p-6 lg:flex"
           >
             <p className="text-center font-[var(--font-mono)] text-sm text-[var(--ink-faint)]">
               YOUR TIER WILL BE

@@ -111,7 +111,7 @@ export function HowItWorksSection() {
                 className={`sketch-card-thin flex flex-col gap-5 p-6 sm:flex-row sm:items-center ${index % 2 === 0 ? "tilt-l" : "tilt-r"}`}
               >
                 {/* Phase number */}
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center bg-[var(--ink)]">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[var(--ink)]">
                   <span className="font-[var(--font-mono)] text-lg font-black text-[var(--paper)]">
                     {phase.phase.replace("PHASE ", "")}
                   </span>
@@ -134,7 +134,7 @@ export function HowItWorksSection() {
                 </div>
 
                 {/* Mechanic badge */}
-                <div className="hidden shrink-0 border-2 border-[var(--ink-line)] px-3 py-1 font-[var(--font-mono)] text-[10px] font-bold tracking-wider text-[var(--ink-soft)] md:block">
+                <div className="hidden shrink-0 rounded-full border border-[var(--ink-line)] px-4 py-1.5 font-[var(--font-mono)] text-[10px] font-bold tracking-wider text-[var(--ink-soft)] md:block">
                   {phase.mechanic}
                 </div>
               </div>
@@ -154,7 +154,7 @@ export function HowItWorksSection() {
                 data-reveal-item
                 className={`sketch-card text-center p-6 ${index === 0 ? "tilt-l" : index === 2 ? "tilt-r" : ""}`}
               >
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center bg-[var(--ink)] text-[var(--paper)]">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--ink)] text-[var(--paper)]">
                   {point.icon}
                 </div>
                 <h4 className="mb-2 font-[var(--font-mono)] text-sm font-bold tracking-wide text-[var(--ink)]">
