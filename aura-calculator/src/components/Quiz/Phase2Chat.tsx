@@ -31,7 +31,7 @@ function TypingIndicator() {
       exit={{ opacity: 0, y: -10, scale: 0.9 }}
       className="flex items-start gap-3 mb-4"
     >
-      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center border-2 border-[var(--ink)] bg-[var(--ink)]">
+      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-[var(--ink)] bg-[var(--ink)]">
         <Bot className="h-4 w-4 text-[var(--paper)]" />
       </div>
       <div className="sketch-card-thin rounded-tl-sm px-4 py-3">
@@ -71,7 +71,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
     >
       {/* Avatar */}
       <div
-        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center border-2 border-[var(--ink)] ${
+        className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-[var(--ink)] ${
           isSystem ? "bg-[var(--ink)] text-[var(--paper)]" : "bg-[var(--paper-card)] text-[var(--ink)]"
         }`}
       >
@@ -239,7 +239,7 @@ export function Phase2Chat({ question, onAnswer, questionNumber, totalQuestions,
       {/* Chat Header */}
       <div className="sketch-card-thin flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center border-2 border-[var(--ink)] bg-[var(--ink)]">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--ink)] bg-[var(--ink)]">
             <MessageSquare className="h-5 w-5 text-[var(--paper)]" />
           </div>
           <div>

@@ -571,7 +571,7 @@ export function QuizPage() {
           <motion.div
             animate={{ rotate: [0, 360] }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[var(--ink)] bg-[var(--ink)]"
+            className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-[var(--ink)] bg-[var(--ink)]"
           >
             <Skull className="h-12 w-12 text-[var(--paper)]" />
           </motion.div>
@@ -616,7 +616,7 @@ export function QuizPage() {
           <motion.div
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border-2 border-[var(--paper)]"
+            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--paper)]"
           >
             <AlertTriangle className="h-8 w-8 text-[var(--paper)]" />
           </motion.div>
