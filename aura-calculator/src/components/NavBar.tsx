@@ -43,9 +43,9 @@ export function NavBar() {
               <Magnetic key={href} strength={0.25}>
                 <Link
                   href={href}
-                  className={`relative flex items-center gap-1.5 px-3 py-2 text-sm font-bold transition-colors ${
+                  className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition-all ${
                     active
-                      ? "bg-[var(--ink)] text-[var(--paper)] shadow-[3px_3px_0_rgba(20,17,12,0.3)]"
+                      ? "bg-[var(--ink)] text-[var(--paper)] shadow-[0_10px_20px_-10px_rgba(23,19,12,0.5)]"
                       : "text-[var(--ink-soft)] hover:bg-[var(--paper-deep)] hover:text-[var(--ink)]"
                   }`}
                 >

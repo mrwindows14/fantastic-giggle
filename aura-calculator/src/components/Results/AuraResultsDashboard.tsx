@@ -717,7 +717,7 @@ export function AuraResultsDashboard({
             className="sketch-card-thin p-5 text-center group"
             whileHover={{ y: -5, scale: 1.02 }}
           >
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center border-2 border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)] group-hover:scale-110 transition-transform">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)] group-hover:scale-110 transition-transform">
               {stat.icon}
             </div>
             <p className="mb-1 font-[var(--font-mono)] text-xs uppercase tracking-wider text-[var(--ink-muted)]">

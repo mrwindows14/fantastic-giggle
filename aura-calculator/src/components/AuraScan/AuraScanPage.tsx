@@ -238,9 +238,9 @@ export function AuraScanPage() {
                   handleFile(e.dataTransfer.files?.[0]);
                 }}
                 onClick={() => inputRef.current?.click()}
-                className={`relative cursor-pointer rounded-none border-2 border-dashed p-12 text-center transition-all duration-300 ${
+                className={`relative cursor-pointer rounded-[2rem] border-2 border-dashed p-12 text-center transition-all duration-300 ${
                   dragOver
-                    ? "border-[var(--ink)] bg-[var(--paper-deep)] shadow-[6px_6px_0_rgba(20,17,12,0.9)] scale-[1.01]"
+                    ? "border-[var(--ink)] bg-[var(--paper-deep)] shadow-[0_20px_40px_-18px_rgba(23,19,12,0.35)] scale-[1.01]"
                     : "border-[var(--ink-line)] bg-[var(--paper-card)] hover:bg-[var(--paper-deep)]"
                 }`}
               >
@@ -268,7 +268,7 @@ export function AuraScanPage() {
                     <motion.div
                       animate={{ y: [0, -8, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="flex h-20 w-20 items-center justify-center bg-[var(--ink)] text-[var(--paper)] shadow-[6px_6px_0_rgba(20,17,12,0.25)]"
+                      className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--ink)] text-[var(--paper)] shadow-[0_14px_28px_-12px_rgba(23,19,12,0.45)]"
                     >
                       <Camera className="h-9 w-9" />
                     </motion.div>
@@ -300,7 +300,7 @@ export function AuraScanPage() {
                 className={`w-full py-5 text-xl font-black ${
                   file
                     ? "sketch-btn text-lg"
-                    : "cursor-not-allowed border-2 border-[var(--ink-line-faint)] bg-transparent text-[var(--ink-faint)]"
+                    : "cursor-not-allowed rounded-full border border-[var(--ink-line-faint)] bg-transparent text-[var(--ink-faint)]"
                 }`}
               >
                 <ScanLine className="h-6 w-6" /> SCAN MY AURA
